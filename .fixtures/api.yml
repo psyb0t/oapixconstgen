@@ -1,0 +1,100 @@
+openapi: "3.0.0"
+
+x-constants:
+  int:
+    defaultPageSize: &defaultPageSize 20
+    maxPageSize: &maxPageSize 100
+  int8:
+    minPriority: &minPriority 1
+    maxPriority: &maxPriority 10
+  int16:
+    defaultPort: &defaultPort 8080
+  int32:
+    maxConnections: &maxConnections 10000
+  int64:
+    maxFileSize: &maxFileSize 5368709120
+  uint:
+    minPasswordLength: &minPasswordLength 8
+    maxPasswordLength: &maxPasswordLength 128
+  uint8:
+    maxRetries: &maxRetries 5
+  uint16:
+    bufferSize: &bufferSize 4096
+  uint32:
+    cacheSize: &cacheSize 1000000
+  uint64:
+    maxMemory: &maxMemory 17179869184
+  float32:
+    minScore: &minScore 0.0
+    maxScore: &maxScore 100.0
+  float64:
+    defaultTimeout: &defaultTimeout 30.5
+    pi: &pi 3.14159265359
+  string:
+    defaultLocale: &defaultLocale "en-US"
+  bool:
+    debugMode: &debugMode false
+    enableCache: &enableCache true
+
+info:
+  version: 1.0.0
+  title: Test API
+
+paths:
+  /items:
+    get:
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: *defaultPageSize
+            maximum: *maxPageSize
+        - name: priority
+          in: query
+          schema:
+            type: integer
+            minimum: *minPriority
+            maximum: *maxPriority
+      responses:
+        "200":
+          description: OK
+
+  /upload:
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  maxLength: *maxFileSize
+      responses:
+        "200":
+          description: OK
+
+  /users:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  minLength: *minPasswordLength
+                  maxLength: *maxPasswordLength
+                locale:
+                  type: string
+                  default: *defaultLocale
+                score:
+                  type: number
+                  minimum: *minScore
+                  maximum: *maxScore
+      responses:
+        "200":
+          description: OK
