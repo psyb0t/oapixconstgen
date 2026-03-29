@@ -16,7 +16,10 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-const filePerms = 0o600
+const (
+	filePerms          = 0o600
+	defaultOutFileName = "constants.gen.go"
+)
 
 type openAPISpec struct {
 	XConstants map[string]map[string]any `yaml:"x-constants"` //nolint:tagliatelle
@@ -41,6 +44,7 @@ func run(args []string, logOut io.Writer) int {
 
 	specPath := fs.String("spec", "", "path to OpenAPI spec file")
 	outDir := fs.String("out", ".", "output directory")
+	outFile := fs.String("file", defaultOutFileName, "output file name")
 	pkg := fs.String("pkg", "api", "package name")
 
 	if err := fs.Parse(args); err != nil {
@@ -81,7 +85,7 @@ func run(args []string, logOut io.Writer) int {
 		return 1
 	}
 
-	outPath := filepath.Join(*outDir, "constants.gen.go")
+	outPath := filepath.Join(*outDir, *outFile)
 	if err := os.WriteFile(outPath, code, filePerms); err != nil {
 		logger.Error("failed to write output file", "error", err)
 
