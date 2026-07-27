@@ -2,6 +2,10 @@
 
 All notable changes per release. Versions follow [semver](https://semver.org).
 
+## v1.1.5 — 2026-07-27
+
+- Added a GitHub Actions CI status badge to the README.
+
 ## v1.1.4 — 2026-07-27
 
 - Fix badges CI job — add needs dependency so the coverage badge waits for the
