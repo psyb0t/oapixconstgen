@@ -2,6 +2,11 @@
 
 All notable changes per release. Versions follow [semver](https://semver.org).
 
+## v1.1.4 — 2026-07-27
+
+- Fix badges CI job — add needs dependency so the coverage badge waits for the
+  coverage artifact.
+
 ## v1.1.3 — 2026-07-27
 
 - Go 1.26; `make lint` now runs `go fix -diff` before `golangci-lint` (drops the
