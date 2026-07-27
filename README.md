@@ -1,5 +1,6 @@
 # oapixconstgen
 
+[![coverage](https://raw.githubusercontent.com/psyb0t/oapixconstgen/badges/coverage.svg)](https://github.com/psyb0t/oapixconstgen/actions/workflows/pipeline.yml)
 [![version](https://raw.githubusercontent.com/psyb0t/oapixconstgen/badges/version.svg)](https://github.com/psyb0t/oapixconstgen/releases)
 [![license](https://raw.githubusercontent.com/psyb0t/oapixconstgen/badges/license.svg)](LICENSE)
 

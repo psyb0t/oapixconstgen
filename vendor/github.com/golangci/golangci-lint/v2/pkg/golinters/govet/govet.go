@@ -28,6 +28,7 @@ import (
 	"golang.org/x/tools/go/analysis/passes/httpmux"
 	"golang.org/x/tools/go/analysis/passes/httpresponse"
 	"golang.org/x/tools/go/analysis/passes/ifaceassert"
+	"golang.org/x/tools/go/analysis/passes/inline"
 	_ "golang.org/x/tools/go/analysis/passes/inspect" // unused internal analyzer
 	"golang.org/x/tools/go/analysis/passes/loopclosure"
 	"golang.org/x/tools/go/analysis/passes/lostcancel"
@@ -83,6 +84,7 @@ var (
 		httpmux.Analyzer,
 		httpresponse.Analyzer,
 		ifaceassert.Analyzer,
+		inline.Analyzer,
 		loopclosure.Analyzer,
 		lostcancel.Analyzer,
 		nilfunc.Analyzer,
@@ -109,7 +111,8 @@ var (
 		waitgroup.Analyzer,
 	}
 
-	// https://github.com/golang/go/blob/go1.23.0/src/cmd/vet/main.go#L55-L87
+	// https://github.com/golang/go/blob/go1.26.1/src/cmd/vet/main.go#L63-L99
+	// https://github.com/golang/go/blob/go1.26.1/src/cmd/fix/main.go#L47-L51
 	defaultAnalyzers = []*analysis.Analyzer{
 		appends.Analyzer,
 		asmdecl.Analyzer,
@@ -124,8 +127,10 @@ var (
 		directive.Analyzer,
 		errorsas.Analyzer,
 		framepointer.Analyzer,
+		hostport.Analyzer,
 		httpresponse.Analyzer,
 		ifaceassert.Analyzer,
+		inline.Analyzer,
 		loopclosure.Analyzer,
 		lostcancel.Analyzer,
 		nilfunc.Analyzer,
@@ -144,6 +149,7 @@ var (
 		unreachable.Analyzer,
 		unsafeptr.Analyzer,
 		unusedresult.Analyzer,
+		waitgroup.Analyzer,
 	}
 )
 

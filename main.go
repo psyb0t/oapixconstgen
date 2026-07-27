@@ -13,12 +13,31 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/psyb0t/ctxerrors"
 	"gopkg.in/yaml.v3"
 )
 
 const (
 	filePerms          = 0o600
 	defaultOutFileName = "constants.gen.go"
+)
+
+// OpenAPI x-constants type keys, mapped to their Go type + fmt verb below.
+const (
+	openAPITypeInt     = "int"
+	openAPITypeInt8    = "int8"
+	openAPITypeInt16   = "int16"
+	openAPITypeInt32   = "int32"
+	openAPITypeInt64   = "int64"
+	openAPITypeUint    = "uint"
+	openAPITypeUint8   = "uint8"
+	openAPITypeUint16  = "uint16"
+	openAPITypeUint32  = "uint32"
+	openAPITypeUint64  = "uint64"
+	openAPITypeFloat32 = "float32"
+	openAPITypeFloat64 = "float64"
+	openAPITypeString  = "string"
+	openAPITypeBool    = "bool"
 )
 
 type openAPISpec struct {
@@ -101,20 +120,20 @@ func collectConstants(spec openAPISpec) []typedConstant {
 	var constants []typedConstant
 
 	typeFormats := map[string]string{
-		"int":     "%d",
-		"int8":    "%d",
-		"int16":   "%d",
-		"int32":   "%d",
-		"int64":   "%d",
-		"uint":    "%d",
-		"uint8":   "%d",
-		"uint16":  "%d",
-		"uint32":  "%d",
-		"uint64":  "%d",
-		"float32": "%v",
-		"float64": "%v",
-		"string":  "%q",
-		"bool":    "%t",
+		openAPITypeInt:     "%d",
+		openAPITypeInt8:    "%d",
+		openAPITypeInt16:   "%d",
+		openAPITypeInt32:   "%d",
+		openAPITypeInt64:   "%d",
+		openAPITypeUint:    "%d",
+		openAPITypeUint8:   "%d",
+		openAPITypeUint16:  "%d",
+		openAPITypeUint32:  "%d",
+		openAPITypeUint64:  "%d",
+		openAPITypeFloat32: "%v",
+		openAPITypeFloat64: "%v",
+		openAPITypeString:  "%q",
+		openAPITypeBool:    "%t",
 	}
 
 	for goType, values := range spec.XConstants {
@@ -157,7 +176,7 @@ func generateCode(pkg string, constants []typedConstant) ([]byte, error) {
 
 	formatted, err := format.Source(buf.Bytes())
 	if err != nil {
-		return nil, fmt.Errorf("failed to format generated code: %w", err)
+		return nil, ctxerrors.Wrap(err, "failed to format generated code")
 	}
 
 	return formatted, nil

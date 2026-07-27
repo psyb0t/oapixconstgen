@@ -2,6 +2,17 @@
 
 All notable changes per release. Versions follow [semver](https://semver.org).
 
+## v1.1.3 — 2026-07-27
+
+- Go 1.26; `make lint` now runs `go fix -diff` before `golangci-lint` (drops the
+  `modernize` tool in favor of the standard library's own fixer).
+- Added a coverage badge; `make test-coverage` now writes `coverage-percent.txt`
+  and the pipeline's `badges` job publishes it.
+- Errors returned across function boundaries wrap with `ctxerrors.Wrap` for
+  file/line/function capture instead of `fmt.Errorf`.
+- Logging already used `log/slog` directly (this is a CLI tool, not a service —
+  no global logging configuration was added).
+
 ## v1.1.2 — 2026-07-27
 
 - Added self-hosted version and license badges; wired a badges job into pipeline.yml.

@@ -11,6 +11,8 @@ const (
 	// FailureCategoryBadPractice indicates bad practice issues.
 	FailureCategoryBadPractice FailureCategory = "bad practice"
 	// FailureCategoryCodeStyle indicates code style issues.
+	//
+	// Deprecated: use FailureCategoryStyle instead.
 	FailureCategoryCodeStyle FailureCategory = "code-style"
 	// FailureCategoryComments indicates comment issues.
 	FailureCategoryComments FailureCategory = "comments"
@@ -64,25 +66,24 @@ type Severity string
 
 // FailurePosition returns the failure position.
 type FailurePosition struct {
-	Start token.Position
-	End   token.Position
+	Start token.Position `json:"Start"`
+	End   token.Position `json:"End"`
 }
 
 // Failure defines a struct for a linting failure.
 type Failure struct {
-	Failure    string
-	RuleName   string
-	Category   FailureCategory
-	Position   FailurePosition
-	Node       ast.Node `json:"-"`
-	Confidence float64
-	// For future use
-	ReplacementLine string
+	Failure         string          `json:"Failure"`
+	RuleName        string          `json:"RuleName"`
+	Category        FailureCategory `json:"Category"`
+	Position        FailurePosition `json:"Position"`
+	Node            ast.Node        `json:"-"`
+	Confidence      float64         `json:"Confidence"`
+	ReplacementLine string          `json:"ReplacementLine"`
 }
 
 // GetFilename returns the filename.
 //
-// Deprecated: Use [Filename].
+// Deprecated: Use [Failure.Filename] instead.
 func (f *Failure) GetFilename() string {
 	return f.Filename()
 }

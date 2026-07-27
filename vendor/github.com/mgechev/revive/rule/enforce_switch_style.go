@@ -3,6 +3,7 @@ package rule
 import (
 	"fmt"
 	"go/ast"
+	"go/token"
 
 	"github.com/mgechev/revive/lint"
 )
@@ -44,12 +45,20 @@ func (r *EnforceSwitchStyleRule) Apply(file *lint.File, _ lint.Arguments) []lint
 	var failures []lint.Failure
 	astFile := file.AST
 	ast.Inspect(astFile, func(n ast.Node) bool {
-		switchNode, ok := n.(*ast.SwitchStmt)
-		if !ok {
+		var body *ast.BlockStmt
+		var node ast.Node
+		switch s := n.(type) {
+		case *ast.SwitchStmt:
+			body = s.Body
+			node = s
+		case *ast.TypeSwitchStmt:
+			body = s.Body
+			node = s
+		default:
 			return true // not a switch statement
 		}
 
-		defaultClause, isLast := r.seekDefaultCase(switchNode.Body)
+		defaultClause, isLast := r.seekDefaultCase(body)
 		hasDefault := defaultClause != nil
 
 		if !hasDefault && r.allowNoDefault {
@@ -58,12 +67,14 @@ func (r *EnforceSwitchStyleRule) Apply(file *lint.File, _ lint.Arguments) []lint
 
 		if !hasDefault && !r.allowNoDefault {
 			// switch without default
-			failures = append(failures, lint.Failure{
-				Confidence: 1,
-				Node:       switchNode,
-				Category:   lint.FailureCategoryStyle,
-				Failure:    "switch must have a default case clause",
-			})
+			if !r.allBranchesEndWithJumpStmt(body) {
+				failures = append(failures, lint.Failure{
+					Confidence: 1,
+					Node:       node,
+					Category:   lint.FailureCategoryStyle,
+					Failure:    "switch must have a default case clause",
+				})
+			}
 
 			return true
 		}
@@ -98,6 +109,31 @@ func (*EnforceSwitchStyleRule) seekDefaultCase(body *ast.BlockStmt) (defaultClau
 	}
 
 	return defaultClause, defaultClause == last
+}
+
+func (*EnforceSwitchStyleRule) allBranchesEndWithJumpStmt(body *ast.BlockStmt) bool {
+	for _, stmt := range body.List {
+		caseClause := stmt.(*ast.CaseClause) // safe to assume stmt is a case clause
+
+		caseBody := caseClause.Body
+		if caseBody == nil {
+			return false
+		}
+
+		lastStmt := caseBody[len(caseBody)-1]
+
+		if _, ok := lastStmt.(*ast.ReturnStmt); ok {
+			continue
+		}
+
+		if jump, ok := lastStmt.(*ast.BranchStmt); ok && jump.Tok == token.BREAK {
+			continue
+		}
+
+		return false
+	}
+
+	return true
 }
 
 // Name returns the rule name.
