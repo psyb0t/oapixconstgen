@@ -2,6 +2,10 @@
 
 All notable changes per release. Versions follow [semver](https://semver.org).
 
+## v1.1.2 — 2026-07-27
+
+- Added self-hosted version and license badges; wired a badges job into pipeline.yml.
+
 ## v1.1.1 — 2026-07-27
 
 Add a LICENSE file.

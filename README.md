@@ -1,5 +1,8 @@
 # oapixconstgen
 
+[![version](https://raw.githubusercontent.com/psyb0t/oapixconstgen/badges/version.svg)](https://github.com/psyb0t/oapixconstgen/releases)
+[![license](https://raw.githubusercontent.com/psyb0t/oapixconstgen/badges/license.svg)](LICENSE)
+
 A Go tool that extracts typed constants from OpenAPI specification files and generates Go code.
 
 ## Overview
