@@ -2,6 +2,27 @@
 
 All notable changes per release. Versions follow [semver](https://semver.org).
 
+## v1.1.6 — 2026-08-01
+
+Repository infrastructure only, no tool change.
+
+- Every push now mirrors the repo to GitLab and Codeberg, so the source stays
+  fetchable if GitHub is unavailable. Gitee is wired but left off — it binds repo
+  creation to a mobile number and silently creates the repo private without one.
+- Pushes to the default branch and every tag are archived to the Wayback Machine
+  and Software Heritage, through the authenticated Save Page Now API, with README
+  outlinks captured too. Feature-branch pushes are skipped because the archive is
+  rate-limited.
+- Issues filed on the Codeberg and GitLab mirrors are pulled back into GitHub
+  every six hours, so a bug reported on a mirror reaches the same tracker.
+  Scheduled runs jitter to avoid stampeding the mirrors; a manual run does not.
+- Pull requests are auto-closed and locked with a pointer to the issue tracker
+  (this landed earlier but was never written down).
+- Note on tags: `v1.1.1` through `v1.1.5` were released as commits and changelog
+  entries but never actually tagged, so `v1.1.6` is the first tag since `v1.1.0`
+  and carries all of that work — the LICENSE file, the Go 1.26 bump, the
+  `ctxerrors` wrapping and the badges — along with the CI changes above.
+
 ## v1.1.5 — 2026-07-27
 
 - Added a GitHub Actions CI status badge to the README.
