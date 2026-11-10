@@ -3,7 +3,7 @@
 [![CI](https://github.com/psyb0t/oapixconstgen/actions/workflows/pipeline.yml/badge.svg?branch=main)](https://github.com/psyb0t/oapixconstgen/actions/workflows/pipeline.yml)
 [![coverage](https://raw.githubusercontent.com/psyb0t/oapixconstgen/badges/coverage.svg)](https://github.com/psyb0t/oapixconstgen/actions/workflows/pipeline.yml)
 [![version](https://raw.githubusercontent.com/psyb0t/oapixconstgen/badges/version.svg)](https://github.com/psyb0t/oapixconstgen/releases)
-[![license](https://raw.githubusercontent.com/psyb0t/oapixconstgen/badges/license.svg)](LICENSE)
+[![license](https://raw.githubusercontent.com/psyb0t/oapixconstgen/badges/license.svg)](https://github.com/psyb0t/oapixconstgen/blob/main/LICENSE)
 
 A Go tool that extracts typed constants from OpenAPI specification files and generates Go code.
 
@@ -27,26 +27,6 @@ This adds it to your `go.mod` under the `tool` directive, making it a versioned 
 
 ## Usage
 
-```bash
-oapixconstgen -spec=path/to/api.yaml [-out=output/dir] [-pkg=packagename]
-```
-
-Or if installed as a project tool:
-
-```bash
-go tool oapixconstgen -spec=path/to/api.yaml [-out=output/dir] [-pkg=packagename]
-```
-
-### Flags
-
-| Flag | Default | Description |
-|------|---------|-------------|
-| `-spec` | (required) | Path to the OpenAPI spec file |
-| `-out` | `.` | Output directory for generated file |
-| `-pkg` | `api` | Package name for generated Go file |
-
-### Example
-
 Given an OpenAPI spec with `x-constants`:
 
 ```yaml
@@ -56,18 +36,8 @@ x-constants:
   int:
     defaultPageSize: &defaultPageSize 20
     maxPageSize: &maxPageSize 100
-  uint:
-    minPasswordLength: &minPasswordLength 8
-  float64:
-    requestTimeout: &requestTimeout 30.5
   string:
     defaultLocale: &defaultLocale "en-US"
-  bool:
-    enableCache: &enableCache true
-
-info:
-  version: 1.0.0
-  title: My API
 
 paths:
   /items:
@@ -95,62 +65,27 @@ This generates `internal/api/constants.gen.go`:
 package api
 
 const (
-	DefaultLocale     string  = "en-US"
-	DefaultPageSize   int     = 20
-	EnableCache       bool    = true
-	MaxPageSize       int     = 100
-	MinPasswordLength uint    = 8
-	RequestTimeout    float64 = 30.5
+	DefaultLocale   string = "en-US"
+	DefaultPageSize int    = 20
+	MaxPageSize     int    = 100
 )
 ```
 
-## Supported Types
+The flags are `-spec` (required), `-out` (default `.`), `-file` (default `constants.gen.go`) and `-pkg` (default `api`). The type keys are the Go integer, float, `string` and `bool` types, and names like `max_page_size` become `MaxPageSize`. The [documentation](https://psyb0t.github.io/oapixconstgen/) has the details, including `go generate` setup and what makes a run fail.
 
-| Type Key | Go Type |
-|----------|---------|
-| `int` | `int` |
-| `int8` | `int8` |
-| `int16` | `int16` |
-| `int32` | `int32` |
-| `int64` | `int64` |
-| `uint` | `uint` |
-| `uint8` | `uint8` |
-| `uint16` | `uint16` |
-| `uint32` | `uint32` |
-| `uint64` | `uint64` |
-| `float32` | `float32` |
-| `float64` | `float64` |
-| `string` | `string` |
-| `bool` | `bool` |
+## Documentation
 
-## Naming Convention
+The full docs live at **[psyb0t.github.io/oapixconstgen](https://psyb0t.github.io/oapixconstgen/)**.
 
-Constant names are converted from `snake_case` or `camelCase` to Go exported names:
+| Page | What's in it |
+| --- | --- |
+| [Command line](https://psyb0t.github.io/oapixconstgen/command-line/) | Every flag, exit codes, log lines, and `go generate` setup |
+| [The x-constants block](https://psyb0t.github.io/oapixconstgen/x-constants/) | The 14 type keys, how values and names are written, ordering, what fails |
+| [Development](https://psyb0t.github.io/oapixconstgen/development/) | Make targets, coverage gate, CI and releases |
 
-| OpenAPI Name | Go Constant |
-|--------------|-------------|
-| `defaultLimit` | `DefaultLimit` |
-| `max_page_size` | `MaxPageSize` |
+## Sponsor
 
-## Use with go:generate
-
-Add a generate directive to automate constant generation:
-
-```go
-//go:generate oapixconstgen -spec=../../api/openapi.yaml -out=. -pkg=api
-```
-
-Or if using as a project tool:
-
-```go
-//go:generate go tool oapixconstgen -spec=../../api/openapi.yaml -out=. -pkg=api
-```
-
-Then run:
-
-```bash
-go generate ./...
-```
+<a href="https://www.buymeacoffee.com/psyb0t"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me a Coffee" height="60" width="217"></a>
 
 ## License
 

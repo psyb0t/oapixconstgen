@@ -2,6 +2,12 @@
 
 All notable changes per release. Versions follow [semver](https://semver.org).
 
+## v1.1.7 — 2026-11-10
+
+- The documentation is published at [psyb0t.github.io/oapixconstgen](https://psyb0t.github.io/oapixconstgen/). The flags, supported types, naming rules and `go:generate` usage moved there from the README, which keeps the quick start.
+- A release tag no longer reruns lint and the tests: it waits for that commit's default-branch run to pass, then cuts the GitHub release.
+- The funding links include Buy Me a Coffee, and `AGENTS.md` plus the project rules in `.agents/rules/` for coding agents are committed.
+
 ## v1.1.6 — 2026-08-01
 
 Repository infrastructure only, no tool change.

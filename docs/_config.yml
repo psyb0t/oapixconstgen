@@ -1,0 +1,51 @@
+title: oapixconstgen
+tagline: Typed Go constants from your OpenAPI spec
+description: A Go command-line tool that reads the x-constants block of an OpenAPI spec and writes a Go file of typed constants, so the spec and the Go code share one set of values.
+lang: en
+url: https://psyb0t.github.io
+baseurl: /oapixconstgen
+repository: psyb0t/oapixconstgen
+author: Ciprian Mandache
+
+remote_theme: just-the-docs/just-the-docs@v0.12.0
+color_scheme: mocha
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-relative-links
+  - jekyll-include-cache
+
+permalink: pretty
+
+relative_links:
+  enabled: true
+  collections: false
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+      seo:
+        type: TechArticle
+
+search:
+  heading_level: 3
+
+aux_links:
+  GitHub:
+    - https://github.com/psyb0t/oapixconstgen
+aux_links_new_tab: true
+
+nav_external_links:
+  - title: Changelog
+    url: https://github.com/psyb0t/oapixconstgen/blob/main/CHANGELOG.md
+
+gh_edit_link: true
+gh_edit_link_text: Edit this page on GitHub
+gh_edit_repository: https://github.com/psyb0t/oapixconstgen
+gh_edit_branch: main
+gh_edit_source: docs
+gh_edit_view_mode: tree

@@ -1,5 +1,6 @@
 oapixconstgen
-CLAUDE.md
 git-update.sh
 coverage.txt
 coverage-percent.txt
+*.local.json
+.testing/
