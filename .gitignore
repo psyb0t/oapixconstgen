@@ -4,3 +4,4 @@ coverage.txt
 coverage-percent.txt
 *.local.json
 .testing/
+git-update.sh.debot
